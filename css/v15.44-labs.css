@@ -1,0 +1,71 @@
+.dcos-lab-modal-box{max-width:760px}.dcos-lab-select-row{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:12px}.dcos-lab-modal-box input,.dcos-lab-modal-box textarea,.dcos-lab-modal-box select{width:100%;margin:6px 0}.dcos-lab-orders{display:grid;gap:10px;margin:10px 0 18px}.dcos-lab-order{display:grid;grid-template-columns:1.2fr 1.8fr .8fr auto;gap:12px;align-items:center;padding:12px;border:1px solid #dbe3ee;border-radius:14px;background:#fff}.dcos-lab-order.done{background:#eef1f4;color:#68707a}.dcos-lab-order small{display:block;color:#718096}.dcos-lab-order p{margin:4px 0}@media(max-width:700px){.dcos-lab-select-row,.dcos-lab-order{grid-template-columns:1fr}}
+/* v15.46 save feedback */
+.dcos-save-indicator{position:fixed;left:18px;bottom:18px;z-index:100000;padding:10px 14px;border-radius:12px;background:#173b2c;color:#fff;font-weight:700;box-shadow:0 8px 28px rgba(0,0,0,.18);transition:.25s;max-width:min(360px,calc(100vw - 36px))}
+.dcos-save-indicator[data-status="error"]{background:#8b1e1e}
+.dcos-save-indicator.is-idle{opacity:.25;transform:translateY(6px)}
+@media(max-width:600px){.dcos-save-indicator{left:10px;right:10px;bottom:10px;text-align:center}}
+
+
+/* v15.49 — stable full-screen modals and aligned desktop counters */
+.dcos-global-modal,
+.modal:not(.hidden){
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  height:100dvh !important;
+  margin:0 !important;
+  padding:24px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:auto !important;
+  z-index:999999 !important;
+}
+.dcos-global-modal .modalBox,
+.dcos-global-modal .dcos-lab-modal-box{
+  width:min(760px, calc(100vw - 48px)) !important;
+  max-width:760px !important;
+  max-height:calc(100dvh - 48px) !important;
+  overflow:auto !important;
+  margin:auto !important;
+  box-sizing:border-box !important;
+}
+@media (min-width:1101px){
+  .stats-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+    align-items:stretch !important;
+  }
+  .stats-grid > .stat-card{
+    min-width:0 !important;
+    min-height:166px !important;
+    height:100% !important;
+    margin:0 !important;
+    justify-content:center !important;
+    align-items:center !important;
+    text-align:center !important;
+  }
+}
+@media (min-width:761px) and (max-width:1100px){
+  .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important;align-items:stretch !important}
+  .stats-grid > .stat-card{height:100% !important;margin:0 !important}
+}
+@media (max-width:760px){
+  .dcos-global-modal,.modal:not(.hidden){padding:12px 8px !important;align-items:flex-start !important}
+  .dcos-global-modal .modalBox,.dcos-global-modal .dcos-lab-modal-box{width:min(100%,430px) !important;max-height:none !important;margin:18px auto !important}
+}
+
+
+/* v15.50 — independent lab settlements, currency, true viewport overlay */
+#dcosLabModal.dcos-global-modal{
+  position:fixed!important;inset:0!important;width:auto!important;height:auto!important;min-width:100vw!important;min-height:100vh!important;min-height:100dvh!important;
+  background:rgba(7,18,31,.58)!important;background-attachment:fixed!important;isolation:isolate!important;transform:none!important;contain:none!important;
+}
+#dcosLabModal.dcos-global-modal::before{content:"";position:fixed;inset:0;background:rgba(7,18,31,.58);z-index:-1;pointer-events:none}
+.dcos-lab-money-row{display:grid;grid-template-columns:minmax(0,1fr) 170px;gap:10px;align-items:center}
+.dcos-lab-order-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.dcos-lab-order.paid{border-color:#b9e7ca}.dcos-paid-pill{background:#dff6e8!important;color:#17643a!important}
+.dcos-lab-due-list{display:grid;gap:10px}.dcos-lab-due-card{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:14px;border:1px solid #dbe8f5;border-radius:14px;background:#fbfdff}.dcos-lab-due-card small{display:block;color:#718096;margin-top:4px}.dcos-lab-due-value{font-size:18px;font-weight:800;color:#0f52ff;line-height:1.45}
+@media(min-width:1101px){.stats-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
+@media(max-width:700px){.dcos-lab-money-row{grid-template-columns:1fr}.dcos-lab-due-card{align-items:flex-start;flex-direction:column}.dcos-lab-order-actions{justify-content:flex-start}}

@@ -1,0 +1,39 @@
+/* v15.54 — visual-only patient cleanup. No DOM nodes are removed. */
+body.dcos-patient-file-open #searchBox{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* Keep the patient identity on the right and push the patient-file/doctor block to the far left. */
+#output .patient-profile-card .profile-header{
+  display:flex !important;
+  justify-content:flex-start !important;
+  align-items:flex-start !important;
+}
+#output .patient-profile-card .profile-header > :first-child{
+  margin-left:0 !important;
+}
+#output .patient-profile-card .dcos-patient-header-side{
+  margin-right:auto !important;
+  margin-left:0 !important;
+  align-items:stretch !important;
+}
+
+/* Hide the redundant clinic/doctor tools card visually only; keep it in the DOM for compatibility. */
+#output .clinic-v5-patient-tools{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+@media(max-width:700px){
+  #output .patient-profile-card .profile-header{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+  }
+  #output .patient-profile-card .dcos-patient-header-side{
+    width:100% !important;
+    margin:0 !important;
+  }
+}

@@ -1,0 +1,9 @@
+.dcos-patient-gender-field{display:flex;grid-column:1/-1;align-items:center;gap:10px;min-height:46px;padding:5px 7px 5px 12px;border:1px solid #d4e7f5;border-radius:13px;background:#f8fcff}
+.dcos-gender-label{font-size:12px;font-weight:800;color:#557286;white-space:nowrap}
+.dcos-gender-options{display:grid;grid-template-columns:1fr 1fr;gap:4px;flex:1;padding:3px;border-radius:10px;background:#eaf4fa}
+.dcos-gender-options label{position:relative;cursor:pointer;margin:0!important}.dcos-gender-options input{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important}
+.dcos-gender-options span{display:flex;align-items:center;justify-content:center;min-height:32px;padding:6px 12px;border-radius:8px;color:#527083;font-size:13px;font-weight:800;transition:.15s}
+.dcos-gender-options input:checked+span{background:linear-gradient(135deg,#19b8f2,#0f52ff);color:#fff;box-shadow:0 5px 14px rgba(15,82,255,.18)}
+.dcos-patient-gender-profile{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:10px 0 4px;padding:8px 10px;border:1px solid #d9eaf6;border-radius:14px;background:#f8fcff}
+.dcos-patient-gender-profile .dcos-gender-options{flex:0 1 190px}
+@media(max-width:600px){.dcos-patient-gender-field,.dcos-patient-gender-profile{width:100%;justify-content:space-between}.dcos-patient-gender-profile .dcos-gender-options{flex:1}}

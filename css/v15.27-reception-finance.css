@@ -1,0 +1,7 @@
+.dcos-reception-currencies{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.dcos-reception-currency-card{border:1px solid #d8e8f8;border-radius:20px;padding:16px;background:#f8fbff}
+.dcos-reception-currency-card h3{margin:0 0 12px;color:#173653}
+.dcos-reception-fin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.dcos-reception-fin-grid>div{background:#fff;border:1px solid #dce9f6;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:5px}
+.dcos-reception-fin-grid small{color:#687c90}.dcos-reception-fin-grid b{font-size:1.05rem;color:#0b5fd1}.dcos-reception-fin-grid .credit{grid-column:1/-1;background:#fff9e9}.dcos-reception-payment-form{margin-top:16px}.dcos-payment-line{display:grid;grid-template-columns:1fr 160px;gap:10px}
+@media(max-width:760px){.dcos-reception-currencies{grid-template-columns:1fr}.dcos-reception-fin-grid{grid-template-columns:1fr}.dcos-payment-line{grid-template-columns:1fr}.dcos-reception-finance-panel{padding:16px}.dcos-reception-fin-grid>div{padding:10px}}

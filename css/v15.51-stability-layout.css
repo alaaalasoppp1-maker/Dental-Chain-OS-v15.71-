@@ -1,0 +1,27 @@
+/* v15.51 stability, patient tools, clinic identity and lab dashboard polish */
+#output .patient-profile-card .profile-header{align-items:flex-start}
+#output .dcos-patient-header-side{display:flex;flex-direction:column;gap:10px;min-width:220px;max-width:270px}
+#output .dcos-patient-doctor-profile-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg,#f8fbff,#eaf4ff);border:1px solid #bcd7ff;box-shadow:0 8px 22px rgba(37,99,235,.10);text-align:right}
+#output .dcos-patient-doctor-profile-btn .dcos-doctor-btn-label{font-size:12px;white-space:nowrap}
+#output .dcos-patient-doctor-profile-btn strong{font-size:14px;line-height:1.35}
+#output .profile-actions{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
+#output .profile-actions button{width:100%;min-height:46px;justify-content:center;margin:0!important}
+#output .profile-actions .dcos-lab-request-btn{grid-row:1}
+#output .profile-actions .dcos-action-finance,
+#output .profile-actions .dcos-action-report,
+#output .profile-actions .dcos-action-edit,
+#output .profile-actions .dcos-action-delete{grid-row:2}
+#output .profile-actions .dcos-action-delete{background:linear-gradient(135deg,#22b7ea,#155df6)!important;color:#fff!important}
+@media(max-width:900px){#output .profile-actions{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){#output .profile-actions{grid-template-columns:repeat(2,minmax(0,1fr))}#output .dcos-patient-header-side{min-width:0;max-width:none;width:100%}}
+
+/* Dashboard laboratory cards and modal */
+.dcos-labs-dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.dcos-lab-dashboard-card{border:1px solid #dbeafe;border-radius:20px;background:#fff;padding:18px;box-shadow:0 12px 30px rgba(15,76,129,.08);display:grid;gap:12px}
+.dcos-lab-dashboard-card h3{margin:0}.dcos-lab-dashboard-card .lab-meta{display:flex;gap:8px;flex-wrap:wrap;color:#64748b;font-size:13px}
+.dcos-lab-dashboard-card .lab-due{display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:15px;background:#f8fbff;border:1px solid #dbeafe}
+.dcos-lab-dashboard-card .lab-due strong{font-size:20px;color:#0b4fc5}.dcos-lab-dashboard-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.dcos-lab-orders-modal{width:min(1120px,94vw)!important;max-height:88vh!important;overflow:auto!important}
+.dcos-lab-orders-cards{display:grid;gap:12px}.dcos-lab-order-card{border:1px solid #dbeafe;border-radius:16px;padding:14px;background:#fff;display:grid;grid-template-columns:1.2fr 1.4fr auto;gap:14px;align-items:center}
+.dcos-lab-order-card.done{opacity:.72;background:#f8fafc}.dcos-lab-order-card .order-status{display:flex;gap:6px;flex-wrap:wrap}.dcos-lab-order-card .order-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:760px){.dcos-lab-order-card{grid-template-columns:1fr}.dcos-lab-order-card .order-actions{justify-content:flex-start}}

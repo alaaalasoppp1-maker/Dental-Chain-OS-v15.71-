@@ -1,0 +1,148 @@
+/* Dental Chain OS v15.61 — adaptive dashboard, compact patient history, aligned actions */
+
+/* Dashboard counters always consume the available row evenly, regardless of visible count. */
+.stats-grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;
+  align-items:stretch!important;
+  justify-content:stretch!important;
+  width:100%!important;
+  gap:14px!important;
+}
+.stats-grid > *{
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  margin:0!important;
+}
+
+/* Keep the doctor selector on the right and the main actions aligned to the left in one row. */
+.doctor-bar{
+  display:flex!important;
+  align-items:center!important;
+  gap:16px!important;
+  width:100%!important;
+}
+.doctor-bar .doctor-select-wrap{flex:0 0 auto!important}
+.doctor-bar .primary-patient-actions{
+  display:flex!important;
+  flex:0 1 auto!important;
+  width:auto!important;
+  margin-right:auto!important;
+  margin-left:0!important;
+  gap:10px!important;
+  flex-wrap:nowrap!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+}
+.doctor-bar .primary-patient-actions > button{
+  flex:0 0 auto!important;
+  width:auto!important;
+  min-width:142px!important;
+  height:48px!important;
+  margin:0!important;
+}
+
+/* Old in-file audit block remains in DOM for compatibility, but does not consume space. */
+#output .audit-section-wrap{display:none!important}
+
+/* Hide only the duplicate finance button below the finance cards. */
+#output .dcos-hide-duplicate-finance{display:none!important}
+
+/* Hide the original inline timeline after its content is copied into the side roll. */
+#output .dcos-inline-timeline-hidden{display:none!important}
+
+.dcos-timeline-tab{
+  position:fixed;
+  right:0;
+  top:52%;
+  transform:translateY(-50%);
+  z-index:2147482000;
+  border:0;
+  border-radius:18px 0 0 18px;
+  padding:14px 9px;
+  min-height:128px;
+  background:linear-gradient(180deg,#18b8ec,#1558ef);
+  color:#fff;
+  box-shadow:0 14px 38px rgba(17,83,195,.28);
+  writing-mode:vertical-rl;
+  text-orientation:mixed;
+  font:800 14px/1.2 Tahoma,Arial,sans-serif;
+  cursor:pointer;
+}
+.dcos-timeline-tab:hover{filter:brightness(1.06)}
+.dcos-timeline-tab span{display:inline-block;margin-bottom:7px;font-size:20px}
+.dcos-timeline-drawer{
+  position:fixed;
+  top:0;
+  right:0;
+  width:min(430px,92vw);
+  height:100dvh;
+  z-index:2147483000;
+  background:#f8fcff;
+  color:#12324d;
+  box-shadow:-24px 0 70px rgba(4,35,67,.28);
+  transform:translateX(105%);
+  transition:transform .24s ease;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  direction:rtl;
+}
+.dcos-timeline-drawer.open{transform:translateX(0)}
+.dcos-timeline-drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 20px;
+  background:linear-gradient(135deg,#12b8ed,#1557ef);
+  color:#fff;
+}
+.dcos-timeline-drawer-head h3{margin:0;font-size:20px}
+.dcos-timeline-drawer-head button{
+  width:42px;height:42px;border:0;border-radius:13px;background:rgba(255,255,255,.18);color:#fff;font-size:22px;cursor:pointer
+}
+.dcos-timeline-drawer-body{overflow:auto;padding:18px}
+.dcos-timeline-backdrop{
+  position:fixed;inset:0;z-index:2147482500;background:rgba(5,21,38,.38);backdrop-filter:blur(2px);display:none
+}
+.dcos-timeline-backdrop.open{display:block}
+.dcos-timeline-drawer .timeline,
+.dcos-timeline-drawer .compact-timeline,
+.dcos-timeline-drawer .compact-report-timeline{display:grid!important;gap:10px!important}
+.dcos-timeline-drawer .timeline-item,
+.dcos-timeline-drawer .compact-row{
+  background:#fff;border:1px solid #d9eafa;border-radius:16px;padding:13px;box-shadow:0 7px 18px rgba(9,62,108,.06)
+}
+
+/* Price-list digits must always use Western/English numerals and a Latin numeral font. */
+.dcos-price-list,
+.dcos-price-edit-row,
+.dcos-price-row,
+.dcos-price-row span,
+.dcos-price-row b,
+.dcos-price-edit-row input[type="number"]{
+  font-variant-numeric:lining-nums tabular-nums!important;
+}
+.dcos-price-row span,
+.dcos-price-edit-row input[type="number"]{
+  font-family:Arial,"Segoe UI",sans-serif!important;
+  direction:ltr!important;
+  unicode-bidi:isolate!important;
+  text-align:center!important;
+}
+
+@media(max-width:900px){
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .doctor-bar{align-items:stretch!important;flex-wrap:wrap!important}
+  .doctor-bar .doctor-select-wrap{width:100%!important}
+  .doctor-bar .primary-patient-actions{
+    width:100%!important;
+    margin:0!important;
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  .doctor-bar .primary-patient-actions > button{width:100%!important;min-width:0!important}
+  .dcos-timeline-tab{top:auto;bottom:96px;min-height:auto;writing-mode:horizontal-tb;border-radius:16px 0 0 16px;padding:12px 14px}
+  .dcos-timeline-tab span{margin:0 4px 0 0;font-size:17px}
+}

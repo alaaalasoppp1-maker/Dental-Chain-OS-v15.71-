@@ -1,0 +1,22 @@
+.dcos-patient-archive-panel{margin:16px 0;padding:18px;border:1px solid rgba(15,82,255,.18);border-radius:20px;background:linear-gradient(145deg,#f8fcff,#edf7ff);box-shadow:0 12px 30px rgba(20,84,130,.08)}
+.dcos-patient-archive-panel h3{margin:0 0 6px;color:#0b4675}.dcos-patient-archive-panel p{margin:0;color:#577287;font-size:13px;line-height:1.7}
+.dcos-patient-archive-status{margin:13px 0;padding:10px 12px;border-radius:12px;background:#eef5fb;color:#536d80;font-weight:700;font-size:13px;border:1px solid #d4e5f1}
+.dcos-patient-archive-status[data-state="ready"]{background:#e8fff6;color:#08765d;border-color:#b6ead9}.dcos-patient-archive-status[data-state="warning"]{background:#fff8e6;color:#8c6415;border-color:#f0d99e}
+.dcos-patient-archive-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.dcos-patient-archive-actions button{margin:0;width:100%}
+@media(max-width:650px){.dcos-patient-archive-actions{grid-template-columns:1fr}}
+
+/* v15.69.2 — File-system image explorer (images are not stored in LocalStorage/Firebase) */
+.dcos-image-explorer{z-index:10050;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(10,25,45,.58)}
+.dcos-image-explorer-box{width:min(920px,96vw);max-height:88vh;background:#fff;border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.3);overflow:hidden;display:flex;flex-direction:column;direction:rtl}
+.dcos-image-explorer-head{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid #e6edf5;background:linear-gradient(135deg,#f8fbff,#edf7ff)}
+.dcos-image-explorer-head h3{margin:0 0 5px;font-size:22px;color:#0d4775}.dcos-image-explorer-head p{margin:0;color:#64788b;font-size:13px}
+.dcos-image-explorer-controls{display:flex;align-items:center;gap:9px}.dcos-image-explorer-controls button{border:0;border-radius:13px;cursor:pointer;font-weight:800}
+.dcos-image-add{width:48px;height:48px;font-size:31px;line-height:1;background:#1286c8;color:#fff;box-shadow:0 8px 18px rgba(18,134,200,.25)}
+.dcos-image-add:disabled{opacity:.55;cursor:wait}.dcos-image-close{padding:12px 16px;background:#e9eef3;color:#34495e}
+.dcos-image-explorer-body{padding:14px;overflow:auto;min-height:220px}.dcos-image-file-list{display:grid;gap:10px}
+.dcos-image-file-row{width:100%;display:grid;grid-template-columns:74px 1fr auto;align-items:center;gap:13px;text-align:right;border:1px solid #e2eaf2;background:#fff;border-radius:16px;padding:9px;cursor:pointer;transition:.16s}
+.dcos-image-file-row:hover{transform:translateY(-1px);border-color:#83bddf;box-shadow:0 8px 22px rgba(22,74,110,.1)}
+.dcos-image-file-row img{width:74px;height:58px;object-fit:cover;border-radius:11px;background:#eef3f7}.dcos-image-file-info{min-width:0;display:flex;flex-direction:column;gap:5px}
+.dcos-image-file-info strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#193b55}.dcos-image-file-info small{color:#7b8d9c}.dcos-image-open-icon{color:#147cb4;font-weight:800;padding:8px 10px}
+.dcos-image-empty,.dcos-image-loading,.dcos-image-error{text-align:center;padding:65px 20px;color:#708697}.dcos-image-error{color:#a33}
+@media(max-width:650px){.dcos-image-explorer-head{align-items:flex-start}.dcos-image-file-row{grid-template-columns:60px 1fr}.dcos-image-file-row img{width:60px;height:52px}.dcos-image-open-icon{display:none}}

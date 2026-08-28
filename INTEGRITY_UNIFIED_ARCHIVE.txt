@@ -1,0 +1,7 @@
+Original files: 81
+Current files: 82
+Missing original files: 0
+None
+
+Added files:
+CHANGES_v15.69_AR.txt

@@ -1,0 +1,37 @@
+{
+  "name": "Dental Chain OS",
+  "short_name": "Dental Chain",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f6fbff",
+  "theme_color": "#0F52FF",
+  "dir": "rtl",
+  "lang": "ar",
+  "description": "Dental clinic EMR with Firebase live sync and DTDC Clinical Link v1",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

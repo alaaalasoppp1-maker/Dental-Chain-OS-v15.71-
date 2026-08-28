@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نظام إدارة عيادات د. طاهر</title>
+
+<link rel="manifest" href="manifest.json?v=15_57_iconpack">
+<link rel="icon" href="assets/favicon.ico?v=15_57_iconpack" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?v=15_57_iconpack">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?v=15_57_iconpack">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=15_57_iconpack">
+
+<link rel="stylesheet" href="style.css?v=15_53">
+<link rel="stylesheet" href="css/v9-stable.css?v=15_53">
+<meta name="theme-color" content="#0F52FF">
+<style id="dcosInitialAuthHide">
+html.dcos-auth-pending .app-shell,body.dcos-auth-pending .app-shell,html.dcos-auth-pending #clinicFinanceSidebar,body.dcos-auth-pending #clinicFinanceSidebar,html.dcos-auth-pending #printArea,body.dcos-auth-pending #printArea,html.dcos-auth-pending #v9SyncFab,body.dcos-auth-pending #v9SyncFab{visibility:hidden!important;opacity:0!important;pointer-events:none!important;}
+body.dcos-auth-pending #coreAuthOverlay,body.dcos-auth-pending #coreLoader{visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
+</style>
+<script>document.documentElement.classList.add('dcos-auth-pending');</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js" defer></script>
+<script src="js/core/core.js?v=15_53" defer></script>
+<script src="app.js?v=15_69_1" defer></script>
+<script src="js/hybrid/clinic-bridge.js?v=15_69_1" defer></script>
+
+<link rel="stylesheet" href="css/v15.22-clinical-fix.css?v=15_53">
+<link rel="stylesheet" href="css/v15.24-responsive-clean.css?v=15_53"><link rel="stylesheet" href="css/v15.59-rx-price.css?v=15_59">
+</head>
+
+<body class="dcos-auth-pending">
+
+<main class="app-shell">
+
+<header class="brand-topbar">
+<button type="button" class="brand-mark brand-home-btn" onclick="backToHome()" title="رجوع للرئيسية">Dr.</button>
+<div>
+<h2>نظام إدارة عيادات د. طاهر</h2>
+<p>DDS, PhD-Endodontics</p>
+</div>
+
+</header>
+
+<div class="patient-inputs">
+
+<div class="fields-box">
+<input id="name" placeholder="اسم المريض">
+<input id="age" type="number" placeholder="العمر">
+<input id="phone" type="tel" inputmode="numeric" autocomplete="tel" pattern="[0-9+ ]*" placeholder="رقم الهاتف">
+<textarea id="allergy" placeholder="التحسس الدوائي"></textarea>
+<textarea id="chronic" placeholder="الأمراض المزمنة"></textarea>
+<textarea id="notes" placeholder="الملاحظات"></textarea>
+<div id="dcosPatientGenderField" class="dcos-patient-gender-field">
+<span class="dcos-gender-label">الجنس</span>
+<div class="dcos-gender-options" role="group" aria-label="جنس المريض">
+<label><input type="radio" name="dcosPatientGender" value="male" data-dcos-gender><span>ذكر</span></label>
+<label><input type="radio" name="dcosPatientGender" value="female" data-dcos-gender><span>أنثى</span></label>
+</div>
+</div>
+<input id="fileNo" class="file-no-input" placeholder="رقم الملف" readonly>
+</div>
+
+<button type="button" class="clear-fields-btn" onclick="clearPatientFields()" title="تفريغ الخانات">
+🗑
+</button>
+
+</div>
+
+<br>
+
+<div class="doctor-bar workflow-star-card">
+<div class="doctor-select-wrap">
+<label>الطبيب المعالج</label>
+<select id="activeDoctor">
+<option value="د. علاء">د. علاء</option>
+<option value="د. ديما">د. ديما</option>
+<option value="المساعدة">المساعدة</option>
+</select>
+</div>
+<div class="primary-patient-actions">
+<button onclick="registerPatient()">➕ تسجيل مريض</button>
+<button onclick="openVisit()">📝 تسجيل زيارة</button>
+<button onclick="openPrescription()">🧾 إنشاء وصفة</button>
+</div>
+</div>
+
+<div class="main-actions">
+
+<input id="backupInput" type="file" accept="application/json" style="display:none" onchange="importBackup(event)">
+</div>
+
+<div id="searchBox" style="display:none; margin-top:20px;">
+<input id="searchInput" placeholder="ابحث بالاسم أو الهاتف أو رقم الملف..." oninput="searchPatients()">
+<div id="suggestionsBox" class="suggestions-box"></div>
+<button id="createNewBtn" style="display:none;" onclick="createNewPatientFromSearch()">
+➕ إنشاء مريض جديد
+</button>
+</div>
+
+<div id="visitModal" class="modal hidden">
+<div class="modalBox">
+<h3>تسجيل زيارة</h3>
+<textarea id="visitText" placeholder="ملاحظات الزيارة"></textarea>
+<div class="visit-payment-box">
+<label>دفعة مالية مع الزيارة</label>
+<div class="visit-payment-line">
+<input id="visitPaymentAmount" type="number" placeholder="المبلغ المدفوع">
+<select id="visitPaymentCurrency">
+<option value="SYP">ل.س</option>
+<option value="USD">$</option>
+</select>
+</div>
+<input id="visitPaymentNote" placeholder="ملاحظة الدفعة - اختياري">
+</div>
+<button onclick="saveVisit()">حفظ</button>
+<button onclick="closeVisit()">رجوع</button>
+</div>
+</div>
+
+<div id="output"></div>
+
+<button id="backBtn" onclick="backToHome()" style="display:none;">
+رجوع للرئيسية
+</button>
+
+</main>
+
+<aside id="clinicFinanceSidebar" class="clinic-finance-sidebar collapsed"></aside>
+
+<div id="printArea"></div>
+<script src="js/hybrid/live-doctor-finance.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.17-clinic-identity-doctor.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.19-patient-crud-transfer.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.20-patient-context-doctor-button.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.22-clinical-finance-reception.js?v=15_53" defer></script>
+
+<link rel="stylesheet" href="css/v15.23-print-finance.css?v=15_53">
+<script src="js/hybrid/v15.23-clinic-id-finance-print.js?v=15_53" defer></script>
+
+<link rel="stylesheet" href="css/v15.25-mobile-clinic.css?v=15_53">
+<script src="js/hybrid/v15.25-mobile-clinic-ux.js?v=15_53" defer></script>
+
+<link rel="stylesheet" href="css/v15.26-reception-dashboard.css?v=15_53">
+<script src="js/hybrid/v15.26-reception-usd-clinicname.js?v=15_53" defer></script>
+
+<link rel="stylesheet" href="css/v15.27-reception-finance.css?v=15_53">
+<script src="js/hybrid/v15.27-reception-finance-consistency.js?v=15_53" defer></script>
+
+<link rel="stylesheet" href="css/v15.44-labs.css?v=15_53">
+<script src="js/hybrid/v15.44-labs-module.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.46-save-reliability.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.48-patient-vault.js?v=15_69_1" defer></script>
+<link rel="stylesheet" href="css/v15.51-stability-layout.css?v=15_55">
+<script src="js/hybrid/v15.51-stability-layout.js?v=15_55" defer></script>
+<script src="js/hybrid/v15.52-clinic-finance-guard.js?v=15_53" defer></script>
+<script src="js/hybrid/v15.53-core-fixes.js?v=15_53" defer></script>
+<link rel="stylesheet" href="css/v15.54-clean-patient.css?v=15_54">
+<script src="js/hybrid/v15.54-clean-patient-finance.js?v=15_54" defer></script>
+
+<link rel="stylesheet" href="css/v15.56-rx-modal-security.css?v=15_56">
+<link rel="stylesheet" href="css/v15.57-typography-mobile-alignment.css?v=15_57">
+<script src="js/hybrid/v15.56-rx-modal-security.js?v=15_56" defer></script>
+<script src="js/hybrid/v15.59-rx-price.js?v=15_60" defer></script>
+<link rel="stylesheet" href="css/v15.61-adaptive-layout.css?v=15_61">
+<script src="js/hybrid/v15.61-adaptive-layout.js?v=15_61" defer></script>
+<link rel="stylesheet" href="css/v15.62-appointment-qr.css?v=15_66">
+<script src="js/hybrid/v15.62-appointment-qr.js?v=15_66" defer></script>
+
+<script src="js/shared/clinical-contract.js?v=15_71" defer></script>
+<link rel="stylesheet" href="css/v15.63-chair-display-launcher.css?v=15_71">
+<script src="js/hybrid/v15.63-chair-display-launcher.js?v=15_71" defer></script>
+<link rel="stylesheet" href="css/v15.65-patient-gender.css?v=15_68">
+<script src="js/hybrid/v15.65-patient-gender.js?v=15_69_1" defer></script>
+<link rel="stylesheet" href="css/v15.66-patient-image-archive.css?v=15_69_2">
+<script src="js/hybrid/v15.66-patient-image-archive.js?v=15_69_2" defer></script>
+<link rel="stylesheet" href="css/v15.70-doctor-assistant-link.css?v=15_71">
+<link rel="stylesheet" href="css/v15.71-clinical-link-additions.css?v=15_71">
+<script src="js/hybrid/v15.70-doctor-assistant-link.js?v=15_71" defer></script>
+</body>
+</html>

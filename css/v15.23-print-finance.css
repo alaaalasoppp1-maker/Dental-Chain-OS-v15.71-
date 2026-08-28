@@ -1,0 +1,17 @@
+/* v15.23 — prescription typography and finance clarity */
+.finance-credit{background:#fff8e8!important;border-color:#f4cf74!important;color:#8a5b00!important}
+.finance-credit small::after{content:" — التزام للعيادة لصالح المريض";font-weight:500}
+@media screen{
+  .rx-preview-wrap{box-shadow:0 14px 40px rgba(15,82,255,.12)}
+}
+@media print{
+  .patient-name{top:27.6mm!important;left:65mm!important;font-size:11pt!important;line-height:1!important;white-space:nowrap!important}
+  .patient-age{top:35.8mm!important;left:31.8mm!important;font-size:10.5pt!important;line-height:1!important;background:transparent!important;border:0!important;padding:0!important;display:block!important}
+  .rx-date{top:27.6mm!important;right:18.5mm!important;font-size:10.5pt!important;line-height:1!important;white-space:nowrap!important}
+  .meds{top:76mm!important;left:25mm!important;right:25mm!important;font-size:10.5pt!important}
+  .med-row{margin-bottom:5.4mm!important;min-height:8mm!important;align-items:flex-start!important}
+  .med-name{width:39%!important;font-size:10.5pt!important;line-height:1.25!important}
+  .med-dose{width:23%!important;font-size:10.2pt!important;line-height:1.25!important}
+  .med-time{width:38%!important;font-size:10.2pt!important;line-height:1.4!important;direction:rtl!important}
+  .rx-instructions{font-size:9.5pt!important;line-height:1.45!important;margin-top:3mm!important}
+}

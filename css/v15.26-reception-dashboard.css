@@ -1,0 +1,10 @@
+.dcos-appt-patient-browser{margin:18px 0;padding:18px;border:1px solid #d9e9fb;border-radius:22px;background:#f8fbff}
+.dcos-appt-patient-head{display:flex;gap:16px;align-items:end;justify-content:space-between;margin-bottom:12px}
+.dcos-appt-patient-head h3{margin:0 0 4px}.dcos-appt-patient-head p{margin:0;color:#65758a}
+.dcos-appt-patient-head input{max-width:360px;margin:0}
+#dcosApptPatientRows{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;max-height:300px;overflow:auto}
+.dcos-appt-patient-row{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:right;background:#fff;color:#15324b;border:1px solid #dbe8f5;border-radius:15px;padding:12px 14px;box-shadow:none}
+.dcos-appt-patient-row span{display:flex;flex-direction:column;gap:3px}.dcos-appt-patient-row small{color:#718096}.dcos-appt-patient-row em{font-style:normal;font-size:12px;color:#0f65d8}
+.dcos-appt-patient-row.selected{border-color:#1e8df4;background:#eaf5ff}.dcos-appt-patient-row.selected em{font-weight:700}
+@media(max-width:700px){.dcos-appt-patient-head{display:block}.dcos-appt-patient-head input{max-width:none;margin-top:12px}#dcosApptPatientRows{grid-template-columns:1fr;max-height:260px}}
+.dashboard-usd-line{display:block;margin-top:4px;color:#0b6cb8;font-size:.86em}.clinic-usd-line{display:block;margin-top:5px;color:#0b6cb8;font-weight:700}

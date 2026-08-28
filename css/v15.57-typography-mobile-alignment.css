@@ -1,0 +1,101 @@
+/* v15.57 — prescription typography, phone RTL hint, mobile KPI centering */
+
+/* Prescription instructions must use the exact same typography as medicine rows. */
+.rx-page .rx-instructions,
+.rx-page .rx-instructions > div,
+.rx-page .rx-instructions span,
+.rx-preview-wrap .rx-instructions,
+.rx-preview-wrap .rx-instructions > div,
+.rx-preview-wrap .rx-instructions span {
+  font-family: AraAqeeqLocal, AraAqeeq, "Cairo", IBMPlexArabicLocal, IBMPlexArabic, Tahoma, Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+.rx-page .rx-instructions {
+  direction: rtl !important;
+  text-align: right !important;
+  margin-top: 10px !important;
+}
+.rx-page .rx-instructions .rx-red {
+  color: #d40000 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Keep the patient phone field and its hint aligned like all Arabic fields. */
+#phone,
+input[name="phone"],
+input[data-field="phone"],
+.patient-phone-input {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: plaintext;
+}
+#phone::placeholder,
+input[name="phone"]::placeholder,
+input[data-field="phone"]::placeholder,
+.patient-phone-input::placeholder {
+  direction: rtl !important;
+  text-align: right !important;
+  opacity: .72;
+}
+
+/* Center every part of dashboard counters on phones and tablets. */
+@media (max-width: 800px) {
+  .stats-grid .stat-card,
+  .stats-grid .stat-card-btn,
+  .stats-grid .stat-card[data-route],
+  .stats-grid button,
+  .stats-grid a {
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  .stats-grid .stat-card > *,
+  .stats-grid .stat-card-btn > *,
+  .stats-grid .stat-card[data-route] > *,
+  .stats-grid button > *,
+  .stats-grid a > * {
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+  }
+  .stats-grid .icon,
+  .stats-grid .stat-icon,
+  .stats-grid b,
+  .stats-grid strong,
+  .stats-grid small,
+  .stats-grid span,
+  .stats-grid p {
+    text-align: center !important;
+  }
+}
+
+@media print {
+  .rx-page .rx-instructions,
+  .rx-page .rx-instructions > div,
+  .rx-page .rx-instructions span {
+    font-family: AraAqeeqLocal, AraAqeeq, "Cairo", IBMPlexArabicLocal, IBMPlexArabic, Tahoma, Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 1.5 !important;
+    letter-spacing: 0 !important;
+  }
+  .rx-page .rx-instructions .rx-red {
+    color: #d40000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
