@@ -1,0 +1,57 @@
+{
+  "name": "dental-chain-os-desktop",
+  "version": "15.73.0",
+  "description": "Dental Chain OS for Windows with local SQLite storage and Firebase sync",
+  "main": "desktop/main.cjs",
+  "private": true,
+  "author": "Dental Chain | Dr. Taher",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/patient-store.cjs && node --check js/hybrid/v15.73-patient-storage.js && node tools/validate-v15.73.mjs",
+    "test": "node tests/desktop-patient-store.test.cjs",
+    "dist:win": "electron-builder --win nsis portable --x64 --publish=never"
+  },
+  "devDependencies": {
+    "electron": "37.2.6",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "com.dentalchain.os",
+    "productName": "Dental Chain OS",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "clinic.html",
+      "dashboard.html",
+      "app.js",
+      "firebase-sync_v8.js",
+      "service-worker.js",
+      "manifest.json",
+      "style.css",
+      "rx-template.png",
+      "css/**/*",
+      "js/**/*",
+      "assets/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {"target": "nsis", "arch": ["x64"]},
+        {"target": "portable", "arch": ["x64"]}
+      ],
+      "icon": "assets/app-icon-1024.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
