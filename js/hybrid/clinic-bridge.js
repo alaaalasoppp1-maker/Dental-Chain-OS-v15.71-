@@ -8,8 +8,7 @@
   const params=new URLSearchParams(location.search);
   const clinicId=safe(params.get('clinic')||localStorage.getItem('dcos_v15_last_clinic')||'taher-main-clinic');
   const SESSION_KEY='dcos_v1513_clinic_session';
-  const patientsKey=()=>`dcos_v1513_patients_${safe(window.DCOS_HYBRID?.clinic?.id||clinicId)}`;
-  const LEGACY_PATIENTS_KEY='patients';
+  const patientStore=()=>window.DCOSPatientStore||null;
   function safe(v){return String(v||'').trim().replace(/[^a-zA-Z0-9_-]/g,'_')||'taher-main-clinic'}
   function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
   function jsonGet(k,f){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}}
@@ -30,26 +29,15 @@
   try{ if('serviceWorker' in navigator){ navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{}); } }catch(e){}
   try{ if(window.caches){ caches.keys().then(keys=>keys.forEach(k=>caches.delete(k))).catch(()=>{}); } }catch(e){}
 
-  // Scope old synchronous patient storage by clinic, while keeping the legacy app happy.
-  const initialScoped=jsonGet(patientsKey(),null);
-  const legacy=jsonGet(LEGACY_PATIENTS_KEY,[]);
-  if(initialScoped===null){
-    // Only seed main clinic from old local data. New clinic links start empty.
-    jsonSet(patientsKey(), clinicId==='taher-main-clinic' ? legacy : []);
-  }
-  // The clinic-scoped key is the single offline copy. Remove the old global mirror after migration.
-  try{ localStorage.removeItem(LEGACY_PATIENTS_KEY); }catch(e){}
-
-  const legacyGetPatients=window.getPatients;
-  const legacySavePatients=window.savePatients;
+  // Keep the old synchronous API, backed by IndexedDB in browsers and SQLite on desktop.
   window.getPatients=function(){
-    const arr=jsonGet(patientsKey(),[]);
+    const arr=patientStore()?.get?.()||[];
     return Array.isArray(arr)?arr:[];
   };
   window.savePatients=function(list){
-    const before=jsonGet(patientsKey(),[]);
+    const before=window.getPatients();
     const arr=(Array.isArray(list)?list:[]).map((p,i)=>({...p, clinicId, updatedAt:p.updatedAt||now(), id:p.id||patientId(p,i)}));
-    jsonSet(patientsKey(),arr);
+    patientStore()?.set?.(arr);
     scheduleCloudSync(before,arr);
     return arr;
   };
@@ -125,10 +113,12 @@
     try{
       if(!window.DCOS || !DCOS.Store) return;
       await DCOS.Store.init();
-      const local=jsonGet(patientsKey(),[]);
+      await patientStore()?.ready;
+      const local=window.getPatients();
       const cloud=await DCOS.Store.list('clinics/'+clinicId+'/patients');
       const merged=mergePatientCopies(local,cloud);
-      jsonSet(patientsKey(),merged);
+      patientStore()?.set?.(merged);
+      await patientStore()?.flush?.();
       // Re-upload local-only/newer records after login; this makes offline saves self-healing.
       if(merged.length) scheduleCloudSync(cloud,merged);
     }catch(e){console.warn('patient cloud pull skipped',e)}
@@ -208,6 +198,7 @@
     const stableRole=String(acc.role||'doctor').trim().toLowerCase();
     document.documentElement.setAttribute('data-dcos-role',stableRole);
     if(document.body) document.body.setAttribute('data-dcos-role',stableRole);
+    await patientStore()?.ready;
     await pullPatientsCloud();
     hideOverlay();
     setDoctorFromAccount();

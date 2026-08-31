@@ -1,6 +1,6 @@
 (function(){
 "use strict";
-const VERSION="15.71-clinical-link";
+const VERSION="15.72-clinical-link";
 const contract=window.DTDCClinicalContract;
 if(!contract)return console.error("DTDC clinical contract is missing");
 
@@ -40,6 +40,7 @@ function renderSummary(p){
     const normalized=normalizeLegacy(plan,index),steps=Array.isArray(plan.steps)?plan.steps:normalized.stages.map(stage=>({text:stage.title,done:stage.done}));
     const done=steps.filter(step=>step.done).length,percent=steps.length?Math.round(done*100/steps.length):0,isDone=plan.status==="done"||plan.status==="archived",ready=plan.status==="ready_to_close"||(!isDone&&percent===100);
     const statusClass=isDone?"closed":ready?"ready":plan.syncState==="pending"?"sync-pending":"active",statusLabel=isDone?"مكتملة ومؤرشفة":ready?"جاهزة للإنهاء من المساعد":plan.syncState==="pending"?"بانتظار المزامنة":"قيد التنفيذ في المساعد";
+    const clinicalEvents=Array.isArray(plan.clinicalEvents)?plan.clinicalEvents:[],lastEvent=clinicalEvents[clinicalEvents.length-1];
     return `<article class="treatment-plan-card dtdc-linked-plan ${isDone?"completed-plan":""}" data-plan-id="${esc(normalized.planId)}">
       <div class="plan-top"><b>${esc(normalized.serviceName)}</b><span>${isDone?100:percent}%</span></div>
       <div class="dtdc-plan-tags"><small>${esc(targetLabel(plan))}</small><small>${normalized.priority==="urgent"?"عاجلة":normalized.priority==="high"?"أولوية عالية":"عادية"}</small><small>${normalized.plannedSessions} جلسة</small></div>
@@ -47,6 +48,7 @@ function renderSummary(p){
       ${plan.note?`<p>${esc(plan.note)}</p>`:""}
       <div class="plan-meta-line"><small>${Number(plan.cost||0).toLocaleString("en-US")} ${String(plan.currency||"SYP").toUpperCase()==="USD"?"$":"ل.س"}</small><small class="dtdc-status ${statusClass}">${statusLabel}</small></div>
       <div class="plan-steps dtdc-readonly-steps">${steps.map((step,stepIndex)=>`<div class="${step.done?"done-step":""}"><i>${step.done?"✓":stepIndex+1}</i><span>${esc(step.text||step.title||"")}</span>${step.completedAt?`<time>${esc(new Date(step.completedAt).toLocaleString("ar"))}</time>`:""}</div>`).join("")}</div>
+      ${lastEvent?`<div class="dtdc-plan-last-event"><small>آخر تسجيل من المساعد · ${esc(new Date(lastEvent.at||lastEvent.createdAt||Date.now()).toLocaleString("ar"))}</small><b>${esc(lastEvent.summary||lastEvent.kind||"")}</b></div>`:""}
       <div class="dtdc-plan-actions"><button type="button" onclick="editTreatmentPlan(${index})" ${isDone?"disabled":""}>✏️ تعديل</button><button type="button" onclick="deleteTreatmentPlan(${index})">🗑 حذف</button></div>
     </article>`;
   };
@@ -136,6 +138,23 @@ function applyClinicalEvents(events){
     if(event.type==="assistant_session_saved"){
       if(!plan.assistantSessions.some(item=>String(item.sessionId)===String(payload.sessionId)))plan.assistantSessions.push({sessionId:payload.sessionId,completedAt:payload.completedAt||event.createdAt,summary:payload.summary||""});
       const completed=new Set(payload.completedStageIds||[]);(plan.steps||[]).forEach(step=>{if(completed.has(step.stageId)){step.done=true;step.completedAt=payload.completedAt||event.createdAt}});plan.lastSessionAt=payload.completedAt||event.createdAt;
+    }
+    if(event.type==="assistant_event"){
+      const eventId=String(payload.eventId||payload.id||event.eventId||"");
+      plan.clinicalEvents=Array.isArray(plan.clinicalEvents)?plan.clinicalEvents:[];
+      if(!eventId||!plan.clinicalEvents.some(item=>String(item.eventId||item.id||"")===eventId)){
+        plan.clinicalEvents.push({
+          eventId,id:eventId,at:payload.at||event.createdAt,createdAt:event.createdAt,
+          kind:String(payload.kind||"clinical_action"),summary:String(payload.summary||"تم تسجيل إجراء سريري"),
+          screenId:String(payload.screenId||""),screenTitle:String(payload.screenTitle||""),stage:String(payload.stage||""),
+          tooth:String(payload.tooth||""),canal:String(payload.canal||""),serviceId:String(payload.serviceId||plan.serviceId||""),treatment:String(payload.treatment||""),
+          details:payload.details&&typeof payload.details==="object"?JSON.parse(JSON.stringify(payload.details)):{},
+          action:String(payload.action||""),control:String(payload.control||""),value:payload.value??null
+        });
+        if(plan.clinicalEvents.length>1500)plan.clinicalEvents.splice(0,plan.clinicalEvents.length-1500);
+      }
+      plan.lastAssistantAction=String(payload.summary||"");
+      plan.lastAssistantUpdateAt=payload.at||event.createdAt;
     }
     if(event.type==="assistant_plan_closed"){
       plan.status="done";plan.doneAt=event.createdAt;plan.doctorDone=payload.doctorName||plan.doctorName||plan.doctor||"";

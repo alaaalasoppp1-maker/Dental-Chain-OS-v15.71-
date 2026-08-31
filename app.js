@@ -12,11 +12,14 @@ let rxPregnantMode = false;
    STORAGE + IDS
 ========================= */
 function getPatients(){
+if(window.DCOSPatientStore) return window.DCOSPatientStore.get();
 return JSON.parse(localStorage.getItem("patients")) || [];
 }
 
 function savePatients(list){
+if(window.DCOSPatientStore) return window.DCOSPatientStore.set(list);
 localStorage.setItem("patients", JSON.stringify(list));
+return list;
 }
 
 function padNumber(n){
@@ -6584,6 +6587,7 @@ try{return JSON.parse(JSON.stringify(data));}catch(e){return data;}
 }
 
 function clinicV5GetBackups(){
+if(window.DCOSPatientStore) return window.DCOSPatientStore.getBackups();
 try{
 let arr = JSON.parse(localStorage.getItem(CLINIC_V5_BACKUPS_KEY) || "[]");
 return Array.isArray(arr) ? arr : [];
@@ -6591,6 +6595,11 @@ return Array.isArray(arr) ? arr : [];
 }
 
 function clinicV5SaveBackups(arr){
+if(window.DCOSPatientStore){
+window.DCOSPatientStore.setBackups((arr || []).slice(0,1));
+try{localStorage.removeItem(CLINIC_V5_BACKUPS_KEY);}catch(e){}
+return;
+}
 try{
 localStorage.setItem(CLINIC_V5_BACKUPS_KEY, JSON.stringify((arr || []).slice(0,1)));
 }catch(e){
